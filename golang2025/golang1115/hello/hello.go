@@ -19,11 +19,13 @@ func main() {
 	}
 	log.Println(message)
 
-	message2, err2 := greetings.Hello("")
-	if err2 != nil {
-		log.Fatal(err2)
+	// 一个名字切片.
+	names := []string{"Gladys", "Samantha", "Darrin"}
+	message1, err1 := greetings.Hellos(names)
+	if err1 != nil {
+		log.Fatal(err1)
 	}
-	log.Println(message2)
+	log.Println(message1)
 }
 
 // 声明一个main包。在 Go 中，作为应用程序执行的代码必须在main包中.
