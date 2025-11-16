@@ -28,6 +28,15 @@ func main() {
 	log.Println(message1)
 }
 
+// // ReverseString 反转字符串
+// func reverseString(s string) string {
+// 	runes := []rune(s)
+// 	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+// 		runes[i], runes[j] = runes[j], runes[i]
+// 	}
+// 	return string(runes)
+// }
+
 // 声明一个main包。在 Go 中，作为应用程序执行的代码必须在main包中.
 
 // 在 hello 目录中

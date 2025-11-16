@@ -1,0 +1,35 @@
+# 初始化
+go mod init golang2025/hello
+
+# 创建文件
+go mod tidy
+
+# 运行
+go run main.go
+
+
+
+go help
+
+
+go get rsc.io/quote
+
+
+go get golang.org/x/tools/cmd/stringer
+go list -f '{{.Dir}}'
+go list -f '{{.Dir}}' rsc.io/quote
+go list -f '{{.Target}}' rsc.io/quote
+
+# 找到 Go 安装路径，go命令将在其中安装当前包
+go list -f '{{.Target}}'
+
+
+# go env 命令设置 GOBIN 变量来更改安装目标：
+go env -w GOBIN=/tmp/bin
+
+
+go命令有几个子命令，用于处理工作区，除了 go work init 之外，我们在本教程前面看到过：
+
+go work use [-r] [dir] 将 use 指令添加到 dir 的 go.work 文件中（如果存在），如果参数目录不存在，则删除 use 目录。 -r标志以递归方式检查 dir 的子目录。
+go work edit 编辑go.work文件，类似于go mod edit
+go work sync 将工作区构建列表中的依赖项同步到每个工作区模块中。
