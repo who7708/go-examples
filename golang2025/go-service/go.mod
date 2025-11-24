@@ -3,6 +3,7 @@ module example/go-service
 go 1.25.3
 
 require (
+	github.com/bacongobbler/browser v1.1.0 // indirect
 	github.com/bytedance/gopkg v0.1.3 // indirect
 	github.com/bytedance/sonic v1.14.2 // indirect
 	github.com/bytedance/sonic/loader v0.4.0 // indirect

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Spring Boot 服务管理</title>
+  <meta charset="utf-8">
+</head>
+
+<body>
+  <h1>Spring Boot 服务管理</h1>
+  <button onclick="start()">启动</button>
+  <button onclick="stop()">停止</button>
+  <input type="file" id="jar" />
+  <button onclick="upgrade()">升级jar</button>
+  <div>当前状态：<span id="status"></span></div>
+
+  <script>
+    function refreshStatus() {
+      fetch('/api/status').then(resp => resp.json())
+        .then(data => {
+          document.getElementById('status').textContent = data.running ? "运行中" : "已停止";
+        });
+    }
+    function start() {
+      fetch('/api/start', { method: 'POST' })
+        .then(resp => resp.json()).then(refreshStatus);
+    }
+    function stop() {
+      fetch('/api/stop', { method: 'POST' })
+        .then(resp => resp.json()).then(refreshStatus);
+    }
+    function upgrade() {
+      var fileInput = document.getElementById('jar');
+      var data = new FormData();
+      data.append('jar', fileInput.files[0]);
+      fetch('/api/upgrade', { method: 'POST', body: data })
+        .then(resp => resp.json()).then(refreshStatus);
+    }
+    setInterval(refreshStatus, 5000);
+    refreshStatus();
+  </script>
+</body>
+
+</html>
