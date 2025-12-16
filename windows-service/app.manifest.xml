@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+    <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+        <security>
+            <requestedPrivileges>
+                <!-- 将 level 设置为 requireAdministrator -->
+                <requestedExecutionLevel level="requireAdministrator" uiAccess="false"/>
+            </requestedPrivileges>
+        </security>
+    </trustInfo>
+</assembly>
+
+<!--
+# 安装rsrc工具
+go install github.com/akavel/rsrc@latest
+
+# 在项目目录下，生成 .syso 资源文件
+rsrc -manifest app.manifest -o app.syso
+-->

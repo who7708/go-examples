@@ -1,3 +1,4 @@
+// go:build windows
 package main
 
 import (
@@ -112,3 +113,14 @@ func startServiceNative(serviceName string) error {
 	log.Println("服务启动指令已成功发送")
 	return nil
 }
+
+// 功能特性
+// 控制 Windows 服务的启动和停止
+// 通过命令行参数指定目标服务名称
+// 提供服务状态查询和命令执行反馈
+
+// # 在 Windows 系统上直接构建
+// go build -o service-controller.exe main.go
+//
+// # 或者指定目标平台进行交叉编译
+// GOOS=windows GOARCH=amd64 go build -o service-controller.exe main.go
