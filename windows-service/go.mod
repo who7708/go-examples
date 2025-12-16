@@ -4,6 +4,7 @@ go 1.24.0
 
 toolchain go1.24.11
 
-require golang.org/x/sys v0.39.0
-
-require github.com/akavel/rsrc v0.10.2 // indirect
+require (
+	github.com/jacobtread/gelv v0.0.0-20220307232334-48f0a7f0ab40
+	golang.org/x/sys v0.39.0
+)

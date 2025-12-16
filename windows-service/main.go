@@ -3,6 +3,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/jacobtread/gelv"
 	"golang.org/x/sys/windows/svc"
 	"golang.org/x/sys/windows/svc/mgr"
 	"log"
@@ -66,6 +67,12 @@ func controlService(serviceName string, cmd svc.Cmd) error {
 }
 
 func main() {
+	// 提权
+	if !gelv.IsElevated() { // Check the app isn't already elevated
+		gelv.Elevate() // Elevate the app
+		return         // Stop execution
+	}
+
 	// 检查命令行参数
 	if len(os.Args) < 2 {
 		log.Fatalf("用法: %s <服务名称>", os.Args[0])
