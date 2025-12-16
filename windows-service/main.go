@@ -5,6 +5,7 @@ import (
 	"golang.org/x/sys/windows/svc"
 	"golang.org/x/sys/windows/svc/mgr"
 	"log"
+	"os"
 	"time"
 )
 
@@ -64,7 +65,14 @@ func controlService(serviceName string, cmd svc.Cmd) error {
 }
 
 func main() {
-	serviceName := "YourServiceName"
+	// 检查命令行参数
+	if len(os.Args) < 2 {
+		log.Fatalf("用法: %s <服务名称>", os.Args[0])
+	}
+
+	// 从命令行参数获取服务名称
+	serviceName := os.Args[1]
+	log.Printf("目标服务: %s", serviceName)
 
 	// 停止服务
 	log.Println("正在停止服务...")
