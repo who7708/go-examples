@@ -3,13 +3,34 @@ package main
 
 import (
 	"fmt"
-	"github.com/jacobtread/gelv"
 	"golang.org/x/sys/windows/svc"
 	"golang.org/x/sys/windows/svc/mgr"
+	"github.com/inconshreveable/go-update"
 	"log"
+	"net/http"
 	"os"
 	"time"
 )
+
+func doUpdate(url string) error {
+	// 1. 从服务器获取新版本二进制流
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	// 2. 应用更新，替换当前可执行文件
+	err = update.Apply(resp.Body, update.Options{})
+	if err != nil {
+		// 3. 重要：处理更新失败，尝试回滚
+		if rerr := update.RollbackError(err); rerr != nil {
+			log.Printf("更新失败且回滚也失败，需手动处理: %v", rerr)
+		}
+		return err
+	}
+	return nil
+}
 
 func controlService(serviceName string, cmd svc.Cmd) error {
 	// 1. 连接到服务控制管理器
@@ -67,11 +88,11 @@ func controlService(serviceName string, cmd svc.Cmd) error {
 }
 
 func main() {
-	// 提权
-	if !gelv.IsElevated() { // Check the app isn't already elevated
-		gelv.Elevate() // Elevate the app
-		return         // Stop execution
-	}
+	// // 提权
+	// if !gelv.IsElevated() { // Check the app isn't already elevated
+	// 	gelv.Elevate() // Elevate the app
+	// 	return         // Stop execution
+	// }
 
 	// 检查命令行参数
 	if len(os.Args) < 2 {
@@ -130,4 +151,32 @@ func startServiceNative(serviceName string) error {
 // go build -o service-controller.exe main.go
 //
 // # 或者指定目标平台进行交叉编译
-// GOOS=windows GOARCH=amd64 go build -o service-controller.exe main.go
+// -ldflags="-linkmode internal"   通过Directory的方式编译，编译器会自动寻找同目录下的资源文件并打包进EXE
+// -ldflags="-H windowsgui"    取消黑窗口
+// GOOS=windows GOARCH=amd64 go build -o service-controller.exe -ldflags="-linkmode internal"  -ldflags="-H windowsgui"
+
+// 目录结构
+// E:\CODE\TEST\GO\GTPBOT
+// │  config.dev.json
+// │  config.pro.json
+// │  go.mod
+// │  go.sum
+// │  main.go
+// │  storage.json
+// │
+// ├─bootstrap
+// │      bootstrap.go
+// │
+// ├─config
+// │      config.go
+// │
+// ├─gtp
+// │      gtp.go
+// │
+// ├─handles
+// │      handle.go
+// │      msg_handler.go
+// │
+// └─resource
+//        icon.ico
+//        info.manifest
